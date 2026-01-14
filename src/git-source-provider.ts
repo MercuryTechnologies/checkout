@@ -115,6 +115,20 @@ export async function getSource(settings: IGitSourceSettings): Promise<void> {
       core.endGroup()
     }
 
+    // Reference repository
+    if (settings.reference) {
+      if (fsHelper.directoryExistsSync(settings.reference)) {
+        core.startGroup('Setting up reference repository')
+        core.info(`Using reference repository at ${settings.reference}`)
+        await git.referenceAdd(settings.reference)
+        core.endGroup()
+      } else {
+        core.warning(
+          `Reference repository '${settings.reference}' does not exist, skipping`
+        )
+      }
+    }
+
     // Disable automatic garbage collection
     core.startGroup('Disabling automatic garbage collection')
     if (!(await git.tryDisableAutomaticGarbageCollection())) {

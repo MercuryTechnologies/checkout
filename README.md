@@ -126,6 +126,11 @@ Please refer to the [release page](https://github.com/actions/checkout/releases/
     # running from unless specified. Example URLs are https://github.com or
     # https://my-ghes-server.example.com
     github-server-url: ''
+
+    # Path to a local bare git reference repository to minimize network usage. If the
+    # provided path does not exist, it will be ignored with a logged message. See
+    # https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---referenceif-abortnew-repository for more details.
+    reference: ''
 ```
 <!-- end usage -->
 

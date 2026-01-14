@@ -627,6 +627,12 @@ class GitCommandManager {
             yield this.execGit(args);
         });
     }
+    referenceAdd(reference) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const alternatesPath = path.join(this.workingDirectory, '.git', 'objects', 'info', 'alternates');
+            yield fs.promises.appendFile(alternatesPath, `${path.join(reference, 'objects')}\n`);
+        });
+    }
     config(configKey, configValue, globalConfig, add) {
         return __awaiter(this, void 0, void 0, function* () {
             const args = ['config', globalConfig ? '--global' : '--local'];
@@ -1241,6 +1247,18 @@ function getSource(settings) {
                 yield git.remoteAdd('origin', repositoryUrl);
                 core.endGroup();
             }
+            // Reference repository
+            if (settings.reference) {
+                if (fsHelper.directoryExistsSync(settings.reference)) {
+                    core.startGroup('Setting up reference repository');
+                    core.info(`Using reference repository at ${settings.reference}`);
+                    yield git.referenceAdd(settings.reference);
+                    core.endGroup();
+                }
+                else {
+                    core.warning(`Reference repository '${settings.reference}' does not exist, skipping`);
+                }
+            }
             // Disable automatic garbage collection
             core.startGroup('Disabling automatic garbage collection');
             if (!(yield git.tryDisableAutomaticGarbageCollection())) {
@@ -1832,6 +1850,9 @@ function getInputs() {
         // Determine the GitHub URL that the repository is being hosted from
         result.githubServerUrl = core.getInput('github-server-url');
         core.debug(`GitHub Host URL = ${result.githubServerUrl}`);
+        // Reference repository
+        result.reference = core.getInput('reference');
+        core.debug(`reference = ${result.reference}`);
         return result;
     });
 }
