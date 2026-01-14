@@ -98,6 +98,12 @@ inputs:
   github-server-url:
     description: The base URL for the GitHub instance that you are trying to clone from, will use environment defaults to fetch from the same instance that the workflow is running from unless specified. Example URLs are https://github.com or https://my-ghes-server.example.com
     required: false
+  reference:
+    description: >
+      Path to a local bare git reference repository to minimize network usage.
+      If the provided path does not exist, it will be ignored with a logged message.
+      See https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---referenceif-abortnew-repository for more details.
+    required: false
 outputs:
   ref:
     description: 'The branch, tag or SHA that was checked out'

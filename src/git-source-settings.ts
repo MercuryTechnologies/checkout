@@ -118,4 +118,9 @@ export interface IGitSourceSettings {
    * User override on the GitHub Server/Host URL that hosts the repository to be cloned
    */
   githubServerUrl: string | undefined
+
+  /**
+   * Path to a local bare git reference repository to minimize network usage
+   */
+  reference: string | undefined
 }

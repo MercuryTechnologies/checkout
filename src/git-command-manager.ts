@@ -24,6 +24,7 @@ export interface IGitCommandManager {
   sparseCheckoutNonConeMode(sparseCheckout: string[]): Promise<void>
   checkout(ref: string, startPoint: string): Promise<void>
   checkoutDetach(): Promise<void>
+  referenceAdd(reference: string): Promise<void>
   config(
     configKey: string,
     configValue: string,
@@ -217,6 +218,20 @@ class GitCommandManager {
   async checkoutDetach(): Promise<void> {
     const args = ['checkout', '--detach']
     await this.execGit(args)
+  }
+
+  async referenceAdd(reference: string): Promise<void> {
+    const alternatesPath = path.join(
+      this.workingDirectory,
+      '.git',
+      'objects',
+      'info',
+      'alternates'
+    )
+    await fs.promises.appendFile(
+      alternatesPath,
+      `${path.join(reference, 'objects')}\n`
+    )
   }
 
   async config(

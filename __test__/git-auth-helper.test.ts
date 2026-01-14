@@ -732,6 +732,7 @@ async function setup(testName: string): Promise<void> {
     sparseCheckoutNonConeMode: jest.fn(),
     checkout: jest.fn(),
     checkoutDetach: jest.fn(),
+    referenceAdd: jest.fn(),
     config: jest.fn(
       async (key: string, value: string, globalConfig?: boolean) => {
         const configPath = globalConfig
@@ -824,7 +825,8 @@ async function setup(testName: string): Promise<void> {
     sshUser: '',
     workflowOrganizationId: 123456,
     setSafeDirectory: true,
-    githubServerUrl: githubServerUrl
+    githubServerUrl: githubServerUrl,
+    reference: undefined
   }
 }
 
